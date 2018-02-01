@@ -20,7 +20,7 @@ class Hello(Resource):
 		birthdate = args['birth']
 		datetime_object = datetime.strptime(birthdate, '%d-%m-%Y')
 		age = int(calculate_age(datetime_object))
-		return {"age":age,"birthday":birthdate}
+		return {"age":age,"birthdate":birthdate}
 
 api.add_resource(Hello,'/birth')
 if __name__ == '__main__':
