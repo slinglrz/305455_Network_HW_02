@@ -1,28 +1,27 @@
 from flask import Flask , request
 from flask_restful import Resource , Api,reqparse
-from datetime import datetime
 import json ,time
+from datetime import datetime,date
+
 
 app = Flask (__name__)
 api = Api(app)
 
 parser = reqparse.RequestParser()
 parser.add_argument('birth')
-
-def age(date):
+	
+def calculate_age(born):
 	today = date.today()
 	return today.year-born.year-((today.month, today.day) < (born.month, born.day))
-	
+
 class Hello(Resource):
-	def get(self):
+	def post(self):
 		args = parser.parse_args()
-	 	birthdate = args['birth']
-		birthtime = datetime.strptime(birthdate, '%d-%m-%Y')				
-		age = int(calculate_age(birthtime))
-		return {"birth":birthtime,"age":age}
+		birthdate = args['birth']
+		datetime_object = datetime.strptime(birthdate, '%d-%m-%Y')
+		age = int(calculate_age(datetime_object))
+		return {"age":age,"birthday":birthdate}
 
-api.add_resource(Hello,'/birthdate')
-
+api.add_resource(Hello,'/birth')
 if __name__ == '__main__':
 	app.run(host='0.0.0.0',port=5555)
-
